@@ -20,8 +20,6 @@ const DragResize: React.FC<{
     }
   };
   const handleMouseDown = (e: React.MouseEvent) => {
-    console.dir(e);
-    console.log(typeof e);
     setInitialOffset([
       e.clientX - (draggable.current?.offsetLeft || 0),
       e.clientY - (draggable.current?.offsetTop || 0),
@@ -32,6 +30,7 @@ const DragResize: React.FC<{
     setActive(!!draggable.current?.contains(target as Node));
   };
   useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside, false);
     if (pressed) {
       document.addEventListener("mousemove", handleDrag, false);
     }
@@ -39,8 +38,6 @@ const DragResize: React.FC<{
       document.removeEventListener("mousemove", handleDrag, false);
     };
   }, [pressed]);
-
-  document.addEventListener("mousedown", handleClickOutside, false);
 
   return (
     <div

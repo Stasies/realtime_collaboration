@@ -7,26 +7,24 @@ const Text: React.FC<{ textItem: Text }> = ({ textItem }) => {
   const textRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState<boolean>(false);
 
-  const modifyTextElement = (val: string) => {
-    // здесь будет patch запрос с редактированием стилей
-  };
-
   useEffect(() => {
     const observeTarget = textRef.current;
     const initialWidth = observeTarget?.clientWidth || 0;
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target.clientWidth > initialWidth) {
-          entry.target.style.fontSize = entry.target.clientWidth / 2 + "px";
-          modifyTextElement(entry.target.clientWidth / 2 + "px");
+    const resizeObserver = new ResizeObserver(
+      (entries: ResizeObserverEntry[]) => {
+        for (const entry of entries) {
+          const width = entry.contentBoxSize
+            ? entry.contentBoxSize[0].inlineSize
+            : entry.contentRect.width;
+          if (Math.floor(width) > initialWidth) {
+          }
         }
       }
-    });
+    );
 
     if (observeTarget) {
       resizeObserver.observe(observeTarget); // Start observing
     }
-
     // Cleanup observer on component unmount
     return () => {
       if (observeTarget) {
