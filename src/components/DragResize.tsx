@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 type PropFunction = (value: any) => void;
 const DragResize: React.FC<{
   coords: number[];
@@ -13,12 +13,15 @@ const DragResize: React.FC<{
   const [initialOffset, setInitialOffset] = useState<number[]>([0, 0]);
   const draggable = useRef<HTMLDivElement | null>(null);
 
-  const handleDrag = (e: MouseEvent) => {
-    e.preventDefault();
-    if (pressed) {
-      setCoords([e.clientX - initialOffset[0], e.clientY - initialOffset[1]]);
-    }
-  };
+  const handleDrag = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault();
+      if (pressed) {
+        setCoords([e.clientX - initialOffset[0], e.clientY - initialOffset[1]]);
+      }
+    },
+    [initialOffset, pressed]
+  );
   const handleMouseDown = (e: React.MouseEvent) => {
     setInitialOffset([
       e.clientX - (draggable.current?.offsetLeft || 0),
@@ -26,18 +29,17 @@ const DragResize: React.FC<{
     ]);
     setPressed(true);
   };
-  const handleClickOutside = ({ target }: MouseEvent) => {
-    setActive(!!draggable.current?.contains(target as Node));
-  };
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside, false);
+    document.addEventListener("mousedown", (e) =>
+      setActive(!!draggable.current?.contains(e.target as Node))
+    );
     if (pressed) {
       document.addEventListener("mousemove", handleDrag, false);
     }
     return () => {
       document.removeEventListener("mousemove", handleDrag, false);
     };
-  }, [pressed]);
+  }, [pressed, handleDrag, setActive]);
 
   return (
     <div

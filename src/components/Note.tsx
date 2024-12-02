@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import DragResize from "./DragResize";
-import styles from "./Note.module.scss";
+import styles from "./Note.module.css";
 import type { Note } from "@/interfaces/Note.interface";
 
 const Note: React.FC<{ note: Note }> = ({ note }) => {
