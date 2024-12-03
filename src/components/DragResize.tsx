@@ -3,16 +3,27 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 type PropFunction = (value: any) => void;
 const DragResize: React.FC<{
   coords: number[];
+  size: { width: string; height: string };
+  still: boolean;
   children: ReactNode;
   active: boolean;
   resizeBoth: boolean;
   setActive: PropFunction;
-}> = ({ coords, children, active, resizeBoth, setActive }) => {
+  updateCoordinates: PropFunction;
+}> = ({
+  coords,
+  size,
+  still,
+  children,
+  active,
+  resizeBoth,
+  setActive,
+  updateCoordinates,
+}) => {
   const [coordinates, setCoords] = useState<number[]>(coords);
   const [pressed, setPressed] = useState<boolean>(false);
   const [initialOffset, setInitialOffset] = useState<number[]>([0, 0]);
   const draggable = useRef<HTMLDivElement | null>(null);
-
   const handleDrag = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
@@ -33,7 +44,7 @@ const DragResize: React.FC<{
     document.addEventListener("mousedown", (e) =>
       setActive(!!draggable.current?.contains(e.target as Node))
     );
-    if (pressed) {
+    if (pressed && !still) {
       document.addEventListener("mousemove", handleDrag, false);
     }
     return () => {
@@ -46,6 +57,8 @@ const DragResize: React.FC<{
       ref={draggable}
       className="p-3 overflow-hidden fixed"
       style={{
+        width: size?.width ? size?.width : "fit-content",
+        height: size?.height ? size?.height : "fit-content",
         resize: resizeBoth ? "both" : "horizontal",
         top: coordinates[1] + "px",
         left: coordinates[0] + "px",
@@ -55,8 +68,11 @@ const DragResize: React.FC<{
     >
       <div
         onMouseDown={(e) => handleMouseDown(e)}
-        onMouseUp={() => setPressed(false)}
-        className="h-full box-bord"
+        onMouseUp={() => {
+          setPressed(false);
+          updateCoordinates(coordinates);
+        }}
+        className="h-full box-content"
       >
         {children}
       </div>
