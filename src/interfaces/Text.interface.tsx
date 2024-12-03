@@ -1,5 +1,5 @@
 export interface Text {
-  id: number;
+  _id: number;
   text: string;
   coords: number[];
   style: {

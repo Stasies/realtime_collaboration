@@ -1,5 +1,5 @@
 export interface Note {
-  id: number;
+  _id: number;
   text: string;
   coords: number[];
   style: {
