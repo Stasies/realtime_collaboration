@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation";
 import useSWRMutation from "swr/mutation";
 type PropFunction = (value: boolean) => void;
 
@@ -13,11 +14,16 @@ async function sendRequest(
 const Tools: React.FC<{ setDrawingMode: PropFunction }> = ({
   setDrawingMode,
 }) => {
-  const { trigger: createNote } = useSWRMutation("/api/notes", sendRequest);
+  const params = useParams();
+  const { trigger: createNote } = useSWRMutation(
+    `/api/room/${params.id}/notes`,
+    sendRequest
+  );
   const { trigger: createTextField } = useSWRMutation(
     "/api/texts",
     sendRequest
   );
+  const { trigger: createRoom } = useSWRMutation("/api/room", sendRequest);
   return (
     <div className="fixed left-10 top-40 z-50 border-2 border-gray-600">
       <div onClick={() => setDrawingMode(false)}>Курсор</div>
@@ -40,6 +46,7 @@ const Tools: React.FC<{ setDrawingMode: PropFunction }> = ({
       >
         note
       </div>
+      <div onClick={async () => await createRoom()}>room</div>
     </div>
   );
 };

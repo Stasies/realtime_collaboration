@@ -1,9 +1,10 @@
 import { Schema, model, models } from 'mongoose'
 
 const noteSchema = new Schema({
+  roomId: { type: Schema.Types.ObjectId, ref: 'room' },
   text: {
     type: String,
-    default: ''
+    default: 'Note'
   },
   coords: {
     type: Array<number>,

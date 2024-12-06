@@ -1,5 +1,9 @@
 const Editor = () => {
-  return <div></div>;
+  return (
+    <div className="fixed bg-white">
+      <div>editor</div>
+    </div>
+  );
 };
 
 export default Editor;

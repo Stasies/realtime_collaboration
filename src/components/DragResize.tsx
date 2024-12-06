@@ -1,5 +1,6 @@
 "use client";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import Editor from "./Editor";
 type PropFunction = (value: any) => void;
 const DragResize: React.FC<{
   coords: number[];
@@ -74,6 +75,7 @@ const DragResize: React.FC<{
         }}
         className="h-full box-content"
       >
+        {/* {active && !pressed && <Editor />} */}
         {children}
       </div>
     </div>

@@ -2,14 +2,15 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
-    "vue/require-default-prop": "off",
-    "vue/require-valid-default-prop": "off",
-    "vue/prop-name-casing": "off",
-    "vue/html-self-closing": "off",
-    "vue/no-v-html": "off",
-    "vue/no-multiple-template-root": "off",
+    "react/require-default-prop": "off",
+    "react/require-valid-default-prop": "off",
+    "react/prop-name-casing": "off",
+    "react/html-self-closing": "off",
+    "react/no-v-html": "off",
+    "react/no-multiple-template-root": "off",
     "@typescript-eslint/no-dynamic-delete": "off",
-    "vue/require-explicit-emits": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "react/require-explicit-emits": "off",
     "prefer-const": "off",
     "no-console": "warn"
   }

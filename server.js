@@ -15,7 +15,6 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    console.log(socket);
     socket.on("message", (val) => {
       console.log("Received message:", val);
       socket.emit("response", { message: "received" });
