@@ -6,7 +6,8 @@ const roomSchema = new Schema({
     type: String,
     default: '',
   },
-  users: [{ type: Schema.Types.ObjectId, ref: 'user' }]
+  users: [{ type: Schema.Types.ObjectId, ref: 'user' }],
+  notes: [{ type: Schema.Types.ObjectId, ref: 'note' }]
 }, { timestamps: true })
 
 const RoomModel = models.room || model('room', roomSchema)

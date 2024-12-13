@@ -2,11 +2,13 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import DragResize from "./DragResize";
 import styles from "./Note.module.css";
 import type { Note } from "@/interfaces/Note.interface";
+import { useParams } from "next/navigation";
 
 const Note: React.FC<{ note: Note }> = ({ note }) => {
   const [active, setActive] = useState<boolean>(false);
   const [still, setStill] = useState<boolean>(false);
   const noteRef = useRef<HTMLDivElement | null>(null);
+  const params = useParams();
 
   useEffect(() => {
     const observeTarget = noteRef.current;
@@ -38,7 +40,7 @@ const Note: React.FC<{ note: Note }> = ({ note }) => {
   };
 
   const updateNote = async (key: string, value: string | number[]) => {
-    const data = await fetch(`/api/notes/${note._id}`, {
+    const data = await fetch(`/api/room/${params.id}/notes/${note._id}`, {
       method: "PATCH",
       body: JSON.stringify({ [key]: value }),
     });

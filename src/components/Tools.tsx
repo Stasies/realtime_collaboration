@@ -1,5 +1,6 @@
 import { useParams } from "next/navigation";
 import useSWRMutation from "swr/mutation";
+import { socket } from "@/hooks/socket";
 type PropFunction = (value: boolean) => void;
 
 async function sendRequest(
@@ -38,8 +39,8 @@ const Tools: React.FC<{ setDrawingMode: PropFunction }> = ({
         text
       </div>
       <div
-        onClick={async () =>
-          await createNote({
+        onClick={() =>
+          socket.emit("noteCreated", {
             coords: [100, 300],
           })
         }

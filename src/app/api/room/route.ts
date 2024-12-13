@@ -5,7 +5,6 @@ export async function GET() {
   return NextResponse.json(rooms)
 }
 export async function POST(req: NextRequest) {
-  const data = await req.json();
   const room = await new RoomModel()
   await room.save()
   return NextResponse.json(room)

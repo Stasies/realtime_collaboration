@@ -4,10 +4,10 @@ import Canvas from "@/components/Canvas";
 import DravingSurface from "@/components/DravingSurface";
 import Tools from "@/components/Tools";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { socket } from "@/hooks/socket";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-console.log(window);
 const Dashboard = () => {
   const params = useParams();
   const [drawingMode, setDrawingMode] = useState<boolean>(false);
@@ -17,9 +17,14 @@ const Dashboard = () => {
   const { data: texts } = useSWR(`/api/room/${params.id}/texts`, () =>
     fetcher(`/api/room/${params.id}/texts`)
   );
-  const { data: room } = useSWR(`/api/room/${params.id}`, () =>
-    fetcher(`/api/room/${params.id}`)
-  );
+  useEffect(() => {
+    socket.on("created", () => console.log("hrere"));
+    socket.on("noteCreated", () => console.log("noteCreated"));
+  }, [socket]);
+  useEffect(() => {
+    fetch("/api/socket");
+  }, []);
+  // socket.emit("joinRoom", params.id?.[0]);
   return (
     <div>
       <Canvas notes={notes} texts={texts}></Canvas>
